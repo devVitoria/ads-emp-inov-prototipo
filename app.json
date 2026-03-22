@@ -32,6 +32,15 @@
             "backgroundColor": "#000000"
           }
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Farma Fácil precisa acessar a câmera para identificar os medicamentos",
+          "microphonePermission": "Farma Fácil precisa acessar o microfone para gravar áudio",
+          "recordAudioAndroid": true,
+          "barcodeScannerEnabled": true
+        }
       ]
     ],
     "experiments": {
