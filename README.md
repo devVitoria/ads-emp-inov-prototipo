@@ -1,1 +1,1 @@
-# ads-emp-inov-prototipo
+Protótipo para aula de empreendedorismo e inovação
