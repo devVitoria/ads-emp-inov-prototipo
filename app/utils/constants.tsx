@@ -22,7 +22,7 @@ export const tabs = [
 export const pharmas = [
   {
     id: "1",
-    name: "Farmácia Panvet",
+    name: "Farmácia Pandel",
     deliveryTime: "45 min",
     price: "R$ 16,99",
     distance: "5 km",
@@ -36,14 +36,5 @@ export const pharmas = [
     price: "R$ 12,99",
     distance: "2 km",
     address: "Av. Presidente Getúlio, 565",
-  },
-
-  {
-    id: "3",
-    name: "Farmácia Kureha Med",
-    deliveryTime: "6 min",
-    price: "R$ 7,99",
-    distance: "1 km",
-    address: "Rua de Sá Cura, 134",
   },
 ];
