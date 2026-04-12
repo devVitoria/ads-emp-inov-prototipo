@@ -372,7 +372,6 @@ export default function MainPage() {
         </View>
       ) : (
         <>
-          {" "}
           <TouchableOpacity
             className="bg-green-700 rounded-2xl p-6 flex-row items-center justify-between"
             onPress={() => {
