@@ -1,3 +1,4 @@
+import Entypo from "@expo/vector-icons/Entypo";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Page from "../components/page";
@@ -15,21 +16,21 @@ export default function Orders() {
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false} className="mb-20">
-          <TouchableOpacity className="bg-green-950/10 rounded-2xl border border-green-950 overflow-hidden mb-4">
-            <View className="bg-green-950/5 px-4 py-3 flex-row items-center justify-between">
+          <TouchableOpacity className="bg-green-50 rounded-2xl border border-green-950 overflow-hidden mb-4">
+            <View className="bg-green-700 px-4 py-3 flex-row items-center justify-between">
               <View className="flex-row items-center">
                 <View className="w-10 h-10 bg-green-800/10 rounded-full items-center justify-center mr-2">
                   <MaterialIcons
                     name="local-shipping"
                     size={20}
-                    color="#052e16"
+                    color="white"
                   />
                 </View>
                 <View>
-                  <Text className="text-green-950 font-bold text-lg">
+                  <Text className="text-white font-bold text-lg">
                     Seu pedido
                   </Text>
-                  <Text className="text-green-900 text-xs">
+                  <Text className="text-white text-xs">
                     Chegará em 4 minutos
                   </Text>
                 </View>
@@ -42,10 +43,10 @@ export default function Orders() {
                   <MaterialIcons
                     name="local-pharmacy"
                     size={24}
-                    color="#052e16"
+                    color="#15803d"
                   />
                   <View className="flex-1 ml-3">
-                    <Text className="text-green-950 font-bold text-base">
+                    <Text className="text-green-700 font-bold text-base">
                       Domperidona Eurofarma - Momenta 10mg, caixa com 30
                       comprimidos {"\n"}| 1 unidade
                     </Text>
@@ -59,9 +60,9 @@ export default function Orders() {
 
               <View className="mb-4 pb-4 border-b border-green-950/10">
                 <View className="flex-row items-start">
-                  <MaterialIcons name="store" size={24} color="#052e16" />
+                  <MaterialIcons name="store" size={24} color="#15803d" />
                   <View className="flex-1 ml-3">
-                    <Text className="text-green-950 font-bold text-base">
+                    <Text className="text-green-700 font-bold text-base">
                       Farmácia Pandel{" "}
                     </Text>
                     <Text className="text-green-900 text-sm">
@@ -75,12 +76,24 @@ export default function Orders() {
               </View>
 
               <View className="flex-row items-center">
-                <MaterialIcons name="person" size={24} color="#052e16" />
+                <MaterialIcons name="person" size={24} color="#15803d" />
                 <View className="flex-1 ml-3">
-                  <Text className="text-green-950 font-bold text-base">
+                  <Text className="text-green-700 font-bold text-base">
                     Entregador
                   </Text>
-                  <Text className="text-green-900 text-sm">Latino Silva</Text>
+                  <Text className="text-green-700 text-sm">Latino Silva</Text>
+                </View>
+              </View>
+
+              <View className="flex-row items-center mt-10">
+                <Entypo name="old-phone" size={24} color="#15803d" />
+                <View className="flex-1 ml-3">
+                  <Text className="text-green-700 font-bold text-base">
+                    Contato da Farmácia
+                  </Text>
+                  <Text className="text-green-700 font-bold text-sm">
+                    (54) 99999-9999 (Toque para Ligar)
+                  </Text>
                 </View>
               </View>
             </View>

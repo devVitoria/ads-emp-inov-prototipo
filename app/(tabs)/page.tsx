@@ -3,16 +3,28 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { CameraView } from "expo-camera";
 import { router } from "expo-router";
 import { useRef, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { cn } from "../components/cn";
+import FaceVerificationModal from "../components/face-verificarion";
 import Page from "../components/page";
+import PaymentMethodModal from "../components/payment-method";
 import { pharmas } from "../utils/constants";
 import { styles } from "../utils/styles";
 
 export default function MainPage() {
   const [onPhotoPressed, setOnPhotoPressed] = useState(false);
+  const [openValidate, setOpenValidate] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [photo, setPhoto] = useState<string | null>(null);
+  const [verified, setVerified] = useState(false);
+  const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [showPharmas, setShowPharmas] = useState<{
     open: boolean;
     selected: string | null;
@@ -84,9 +96,14 @@ export default function MainPage() {
                     Você será redirecionado para outra tela.
                   </Text>
                 </View>
-                <View className="w-14 h-14 bg-green-800/20 rounded-full items-center justify-center">
+                <Pressable
+                  onPress={() => {
+                    setOpenValidate(true);
+                  }}
+                  className="w-14 h-14 bg-green-800/20 rounded-full items-center justify-center"
+                >
                   <AntDesign name="arrow-right" size={32} color="#052e16" />
-                </View>
+                </Pressable>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
@@ -101,7 +118,7 @@ export default function MainPage() {
                 }}
                 className="absolute bottom-[70px] flex-1 right-0 left-0  items-center justify-center"
               >
-                <View className="p-6 bg-green-950/60  rounded-lg">
+                <View className="p-2 px-20 bg-green-700  rounded-lg">
                   <Text style={styles.text}>Fechar</Text>
                 </View>
               </TouchableOpacity>
@@ -114,46 +131,44 @@ export default function MainPage() {
                   {status}
                 </Text>
               </Text>
-              <View className="bg-green-950/5 rounded-2xl p-4 mx-2 mb-4 border border-green-950">
+              <View className="bg-green-700 rounded-2xl p-4 mx-2 mb-4 border border-green-950">
                 {Object.entries(infosOrder).map(([key, value]) => (
                   <View
                     key={key}
-                    className="flex-row justify-between items-center py-4 border-b border-dashed border-green-950"
+                    className="flex-row justify-between items-center py-4 border-b border-dashed border-white"
                   >
                     {key !== "price" ? (
                       <>
-                        <Text className="text-green-950 font-semibold text-lg">
+                        <Text className="text-white font-semibold text-lg">
                           {normalizeName[key]}:
                         </Text>
                         {key === "quantity" ? (
                           <View className="flex-row items-center">
-                            <TouchableOpacity className="w-8 h-8 bg-green-800/20 rounded-full items-center justify-center">
+                            <TouchableOpacity className="w-8 h-8 bg-white rounded-full items-center justify-center">
                               <Text className="text-green-950 font-bold">
                                 -
                               </Text>
                             </TouchableOpacity>
-                            <Text className="text-green-950 text-lg mx-3">
+                            <Text className="text-white text-lg mx-3">
                               {value}
                             </Text>
-                            <TouchableOpacity className="w-8 h-8 bg-green-800/20 rounded-full items-center justify-center">
+                            <TouchableOpacity className="w-8 h-8 bg-white rounded-full items-center justify-center">
                               <Text className="text-green-950 font-bold">
                                 +
                               </Text>
                             </TouchableOpacity>
                           </View>
                         ) : (
-                          <Text className="text-green-950 text-lg">
-                            {value}
-                          </Text>
+                          <Text className="text-white text-lg">{value}</Text>
                         )}
                       </>
                     ) : (
                       <View className="flex flex-col gap-2">
-                        <View className="flex-row justify-between items-center w-full border-b border-dashed border-green-950 pb-4">
-                          <Text className="text-green-950 font-bold text-xl">
+                        <View className="flex-row justify-between items-center w-full border-b border-dashed border-white pb-4">
+                          <Text className="text-white font-bold text-xl">
                             {normalizeName[key]}:
                           </Text>
-                          <Text className="text-green-950 font-bold text-xl ">
+                          <Text className="text-white font-bold text-xl ">
                             {value}
                           </Text>
                         </View>
@@ -185,15 +200,25 @@ export default function MainPage() {
                               ) * 0.2
                             ).toFixed(2),
                           },
+                          {
+                            title: "Taxa de serviço (3%)",
+                            newValue: (
+                              Number(
+                                String(value)
+                                  ?.replace("R$ ", "")
+                                  .replace(",", "."),
+                              ) * 0.03
+                            ).toFixed(2),
+                          },
                         ]).map(([k, v]) => (
                           <View
                             key={k + "sub"}
                             className="flex-row justify-between items-center w-full"
                           >
-                            <Text className="text-green-950 text-base">
+                            <Text className="text-white text-base">
                               {v?.title}:
                             </Text>
-                            <Text className="text-green-950 text-base">
+                            <Text className="text-white text-base">
                               {v?.newValue}
                             </Text>
                           </View>
@@ -206,11 +231,11 @@ export default function MainPage() {
 
               <TouchableOpacity
                 onPress={() => {
-                  setOnRestart(true);
+                  setOpenPaymentModal(true);
                 }}
                 className="absolute bottom-[70px] flex-1 right-0 left-0  items-center justify-center"
               >
-                <View className="p-6 bg-green-950/60  rounded-lg">
+                <View className="p-2 px-20 bg-green-700 rounded-lg">
                   <Text style={styles.text}>Concluir</Text>
                 </View>
               </TouchableOpacity>
@@ -229,7 +254,7 @@ export default function MainPage() {
                 <TouchableOpacity
                   key={pharma.id}
                   className={cn(
-                    `bg-green-800/10 mb-4 rounded-2xl p-6 flex-row items-center justify-between`,
+                    `bg-green-700 mb-4 rounded-2xl p-6 flex-row items-center justify-between`,
                     {
                       "border-2 border-green-900":
                         showPharmas.selected === pharma.id,
@@ -244,7 +269,7 @@ export default function MainPage() {
                 >
                   <View className="flex-1 w-full ">
                     <View className="flex w-full flex-row justify-between items-center">
-                      <Text className="text-green-950 text-2xl font-bold mb-1">
+                      <Text className="text-white text-2xl font-bold mb-1">
                         {pharma.name}
                       </Text>
                       <View className="w-16 justify-center items-center rounded-md h-8 bg-green-950/40">
@@ -254,16 +279,16 @@ export default function MainPage() {
                       </View>
                     </View>
 
-                    <Text className="text-green-950 text-xl mb-4">
+                    <Text className="text-white text-xl mb-4">
                       {pharma.address}
                     </Text>
 
                     <View className="flex w-full flex-row justify-between items-center">
-                      <Text className="text-green-950 font-bold text-end text-xl">
+                      <Text className="text-white font-bold text-end text-xl">
                         Entrega: {pharma.deliveryTime}
                       </Text>
                       <View className="px-2 justify-center items-center rounded-md h-8 bg-green-950/10">
-                        <Text className="text-green-950  font-bold text-xl">
+                        <Text className="text-white font-bold text-xl">
                           Preço: {pharma.price}
                         </Text>
                       </View>
@@ -277,7 +302,7 @@ export default function MainPage() {
                 onPress={() => setOnFinalize(true)}
                 className="absolute bottom-[70px] flex-1 right-0 left-0  items-center justify-center"
               >
-                <View className="p-6 bg-green-950/60 rounded-lg">
+                <View className="p-2 px-20 bg-green-700 rounded-lg">
                   <Text style={styles.text}>Continuar</Text>
                 </View>
               </TouchableOpacity>
@@ -314,7 +339,7 @@ export default function MainPage() {
                   }}
                   style={styles.button}
                 >
-                  <Text style={styles.text}>Confirmar</Text>
+                  <MaterialIcons name="done" size={32} color="white" />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -329,7 +354,7 @@ export default function MainPage() {
                   }}
                   style={styles.button}
                 >
-                  <Text style={styles.text}>Tentar de novo</Text>
+                  <AntDesign name="close" size={32} color="close" />
                 </TouchableOpacity>
               </>
             ) : (
@@ -346,26 +371,55 @@ export default function MainPage() {
           </View>
         </View>
       ) : (
-        <TouchableOpacity
-          className="bg-green-800/10 rounded-2xl p-6 flex-row items-center justify-between"
-          onPress={() => {
-            setOnPhotoPressed(true);
-            setStatus("Analisando...");
-          }}
-        >
-          <View className="flex-1">
-            <Text className="text-green-950 text-2xl font-bold mb-1">
-              Toque para fotografar o medicamento
-            </Text>
-            <Text className="text-green-950 text-base">
-              Ao clicar, posicione o remédio na câmera.
-            </Text>
-          </View>
-          <View className="w-14 h-14 bg-green-800/20 rounded-full items-center justify-center">
-            <MaterialIcons name="add-a-photo" size={32} color="#052e16" />
-          </View>
-        </TouchableOpacity>
+        <>
+          {" "}
+          <TouchableOpacity
+            className="bg-green-700 rounded-2xl p-6 flex-row items-center justify-between"
+            onPress={() => {
+              setOnPhotoPressed(true);
+              setStatus("Analisando...");
+            }}
+          >
+            <View className="flex-1">
+              <Text className="text-white text-2xl font-bold mb-1">
+                Toque para fotografar o medicamento
+              </Text>
+              <Text className="text-white text-base">
+                Ao clicar, posicione o remédio na câmera.
+              </Text>
+            </View>
+            <View className="w-14 h-14 bg-white rounded-full items-center justify-center">
+              <MaterialIcons name="add-a-photo" size={32} color="#15803d" />
+            </View>
+          </TouchableOpacity>
+          <Pressable
+            onPress={() => {
+              setOpenValidate(true);
+            }}
+            className="flex flex-row items-center mt-10 gap-4 p-2 bg-green-700 rounded-md max-w-[120px]"
+          >
+            <AntDesign name="question-circle" size={16} color="white" />
+            <Text className="text-white font-bold">Dúvidas</Text>
+          </Pressable>
+        </>
       )}
+
+      <FaceVerificationModal
+        onClose={() => setOpenValidate(false)}
+        visible={openValidate}
+        setVerified={setVerified}
+      />
+
+      <PaymentMethodModal
+        onConfirm={() => {
+          setOpenPaymentModal(false);
+          setOnRestart(true);
+        }}
+        visible={openPaymentModal}
+        onClose={() => {
+          setOpenPaymentModal(false);
+        }}
+      />
     </Page>
   );
 }
